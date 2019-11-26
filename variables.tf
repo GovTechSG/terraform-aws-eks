@@ -37,6 +37,12 @@ variable "environment" {
   description = "Name for environment of this EKS cluster"
 }
 
+variable "enable_external_dns" {
+  description = "Enables External DNS installation(policy) and attaches policy to worker groups"
+  type        = bool
+  default     = false
+}
+
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster. Also used as a prefix in names of related resources."
   type        = string
@@ -100,6 +106,18 @@ variable "map_users" {
   description = "Additional IAM users to add to the aws-auth configmap. See examples/basic/variables.tf for example format."
   type        = list(map(string))
   default     = []
+}
+
+variable "manage_worker_autoscaling_policy" {
+  description = "Whether to let the module manage the cluster autoscaling iam policy."
+  type        = bool
+  default     = true
+}
+
+variable "attach_worker_autoscaling_policy" {
+  description = "Whether to attach the module managed cluster autoscaling iam policy to the default worker IAM role. This requires `manage_worker_autoscaling_policy = true`"
+  type        = bool
+  default     = true
 }
 
 variable "module_source_version" {
