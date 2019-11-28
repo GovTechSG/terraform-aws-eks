@@ -83,26 +83,30 @@ resource "aws_iam_policy" "external_dns_policy" {
 
   policy = <<EOF
   {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "route53:ListHostedZones",
-                    "route53:ListResourceRecordSets"
-                ],
-                "Resource": ["*"]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "route53:ChangeResourceRecordSets"
-                ],
-                "Resource": ["*"]
-            }
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "route53:ListHostedZones",
+          "route53:ListResourceRecordSets"
+        ],
+        "Resource": [
+          "*"
         ]
-    }
-  EOF
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "route53:ChangeResourceRecordSets"
+        ],
+        "Resource": [
+          "*"
+        ]
+      }
+    ]
+  }
+EOF
 }
 
 data "terraform_remote_state" "vpc" {
