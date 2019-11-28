@@ -31,7 +31,7 @@ locals {
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source                          = "terraform-aws-modules/eks/aws"
-  version                         = "5.1.0"
+  version                         = "6.0.2"
   cluster_name                    = var.eks_cluster_name
   subnets                         = flatten([
                                       data.terraform_remote_state.vpc.outputs.private_subnets_ids,
