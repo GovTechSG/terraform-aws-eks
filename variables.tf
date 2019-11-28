@@ -93,19 +93,30 @@ variable "write_aws_auth_config" {
 variable "map_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth configmap."
   type        = list(string)
-  default     = [""]
+
+  default = []
 }
 
 variable "map_roles" {
-  description = "Additional IAM roles to add to the aws-auth configmap. See examples/basic/variables.tf for example format."
-  type        = list(map(string))
-  default     = []
+  description = "Additional IAM roles to add to the aws-auth configmap."
+  type = list(object({
+    rolearn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = []
 }
 
 variable "map_users" {
-  description = "Additional IAM users to add to the aws-auth configmap. See examples/basic/variables.tf for example format."
-  type        = list(map(string))
-  default     = []
+  description = "Additional IAM users to add to the aws-auth configmap."
+  type = list(object({
+    userarn  = string
+    username = string
+    groups   = list(string)
+  }))
+
+  default = []
 }
 
 variable "manage_worker_autoscaling_policy" {
