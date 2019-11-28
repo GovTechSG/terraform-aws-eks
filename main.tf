@@ -44,7 +44,7 @@ module "eks" {
   cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
-  workers_additional_policies     = var.enable_external_dns ? aws_iam_policy.external_dns_policy.* : []
+  workers_additional_policies     = var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : []
 
   manage_cluster_iam_resources     = var.manage_cluster_iam_resources
   manage_worker_iam_resources      = var.manage_worker_iam_resources
