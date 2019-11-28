@@ -82,7 +82,7 @@ resource "aws_iam_policy" "external_dns_policy" {
   description = "Allows EKS nodes to modify Route53 to support ExternalDNS."
 
   policy = <<EOF
-  {
+{
     "Version": "2012-10-17",
     "Statement": [
       {
@@ -105,7 +105,7 @@ resource "aws_iam_policy" "external_dns_policy" {
         ]
       }
     ]
-  }
+}
 EOF
 }
 
