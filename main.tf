@@ -37,6 +37,7 @@ module "eks" {
                                       data.terraform_remote_state.vpc.outputs.private_subnets_ids,
                                       data.terraform_remote_state.vpc.outputs.public_subnets_ids,
                                       data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
+                                      var.additional_subnets,
                                     ])
   kubeconfig_name                 = "${var.eks_cluster_name}-${var.environment}-eks"
   cluster_version                 = var.cluster_version

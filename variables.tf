@@ -3,6 +3,12 @@ variable "aws_region" {
   default     = "ap-southeast-1"
 }
 
+variable "additional_subnets" {
+  description = "Additional Subnets aside from those in your main vpc(e.g secondary cidr blocks)"
+  type        = list
+  default     = []
+}
+
 variable "additional_whitelist_cidr_block_443" {
   description = "Additional cidr to allow inbound and outbound for port 443 to eks cluster"
   type        = list
