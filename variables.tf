@@ -49,6 +49,12 @@ variable "enable_external_dns" {
   default     = false
 }
 
+variable "enable_dynamic_pv" {
+  description = "Enables dynamic persistent volume provisioning by allowing nodes to manage ec2 volumes and attaches policy to worker groups"
+  type        = bool
+  default     = false
+}
+
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster. Also used as a prefix in names of related resources."
   type        = string

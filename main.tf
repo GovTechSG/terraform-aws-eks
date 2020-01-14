@@ -45,8 +45,10 @@ module "eks" {
   cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
-  workers_additional_policies     = var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : []
-
+  workers_additional_policies     = concat(
+                                      var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
+                                      var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
+                                      )
   manage_cluster_iam_resources     = var.manage_cluster_iam_resources
   manage_worker_iam_resources      = var.manage_worker_iam_resources
   manage_worker_autoscaling_policy = var.manage_worker_autoscaling_policy
@@ -74,6 +76,41 @@ resource "aws_security_group_rule" "allow_additional_cidr_443_ingress" {
   security_group_id = module.eks.cluster_security_group_id
   description       = var.additional_whitelist_cidr_block_443_description[count.index]
 }
+
+resource "aws_iam_policy" "dynamic_persistent_volume_provisioning" {
+  count = var.enable_dynamic_pv ? 1 : 0
+
+  name = "k8sDynamicPVProvisioning"
+  path = "/"
+  description = "Allows EKS nodes to dynamically create and manage ec2 volumes"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachVolume",
+        "ec2:CreateSnapshot",
+        "ec2:CreateTags",
+        "ec2:CreateVolume",
+        "ec2:DeleteSnapshot",
+        "ec2:DeleteTags",
+        "ec2:DeleteVolume",
+        "ec2:DescribeInstances",
+        "ec2:DescribeSnapshots",
+        "ec2:DescribeTags",
+        "ec2:DescribeVolumes",
+        "ec2:DetachVolume"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 
 resource "aws_iam_policy" "external_dns_policy" {
   count = var.enable_external_dns ? 1 : 0
