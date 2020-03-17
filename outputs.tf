@@ -53,3 +53,10 @@ output "workers_user_data" {
   value       = "${module.eks.workers_user_data}"
 }
 
+output "worker_additional_policies" {
+  description = "Additional policies added to the worker iam role"
+  value = concat(
+    var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
+  )
+}

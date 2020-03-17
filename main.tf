@@ -30,33 +30,33 @@ locals {
 # references:
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  source       = "terraform-aws-modules/eks/aws"
-  version      = "10.0.0"
-  cluster_name = var.eks_cluster_name
-  subnets = flatten([
-    data.terraform_remote_state.vpc.outputs.private_subnets_ids,
-    data.terraform_remote_state.vpc.outputs.public_subnets_ids,
-    data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
-    var.additional_subnets,
-  ])
+  source                          = "terraform-aws-modules/eks/aws"
+  version                         = "10.0.0"
+  cluster_name                    = var.eks_cluster_name
   kubeconfig_name                 = "${var.eks_cluster_name}-${var.environment}-eks"
   cluster_version                 = var.cluster_version
   config_output_path              = var.config_output_path
   cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
+  manage_cluster_iam_resources    = var.manage_cluster_iam_resources
+  manage_worker_iam_resources     = var.manage_worker_iam_resources
+  cluster_iam_role_name           = var.cluster_iam_role_name
+  permissions_boundary            = var.permissions_boundary
+  map_users                       = var.map_users
+  worker_groups                   = local.worker_groups
+  vpc_id                          = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  subnets = flatten([
+    data.terraform_remote_state.vpc.outputs.private_subnets_ids,
+    data.terraform_remote_state.vpc.outputs.public_subnets_ids,
+    data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
+    var.additional_subnets,
+  ])
   workers_additional_policies = concat(
     var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
     var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
   )
-  manage_cluster_iam_resources     = var.manage_cluster_iam_resources
-  manage_worker_iam_resources      = var.manage_worker_iam_resources
-  cluster_iam_role_name            = var.cluster_iam_role_name
-  permissions_boundary             = var.permissions_boundary
-  map_users                        = var.map_users
-  worker_groups                    = local.worker_groups
-  vpc_id                           = data.terraform_remote_state.vpc.outputs.vpc_id
-
   tags = {
     Environment = var.environment
     Name        = var.eks_cluster_name
