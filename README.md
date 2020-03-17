@@ -73,6 +73,13 @@ module "eks" {
 }
 ```
 
+
+### Migration
+
+#### 1.x.x to 2.x.x
+- delete aws-auth configmap as it is now created using k8s provider.
+-
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |

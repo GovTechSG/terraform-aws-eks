@@ -4,7 +4,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "${var.aws_region}"
+  region = var.aws_region
 }
 
 locals {
@@ -51,8 +51,6 @@ module "eks" {
   )
   manage_cluster_iam_resources     = var.manage_cluster_iam_resources
   manage_worker_iam_resources      = var.manage_worker_iam_resources
-  manage_worker_autoscaling_policy = var.manage_worker_autoscaling_policy
-  attach_worker_autoscaling_policy = var.attach_worker_autoscaling_policy
   cluster_iam_role_name            = var.cluster_iam_role_name
   permissions_boundary             = var.permissions_boundary
   map_users                        = var.map_users
