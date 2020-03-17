@@ -30,25 +30,25 @@ locals {
 # references:
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  source                          = "terraform-aws-modules/eks/aws"
-  version                         = "6.0.2"
-  cluster_name                    = var.eks_cluster_name
-  subnets                         = flatten([
-                                      data.terraform_remote_state.vpc.outputs.private_subnets_ids,
-                                      data.terraform_remote_state.vpc.outputs.public_subnets_ids,
-                                      data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
-                                      var.additional_subnets,
-                                    ])
+  source       = "terraform-aws-modules/eks/aws"
+  version      = "7.0.1"
+  cluster_name = var.eks_cluster_name
+  subnets = flatten([
+    data.terraform_remote_state.vpc.outputs.private_subnets_ids,
+    data.terraform_remote_state.vpc.outputs.public_subnets_ids,
+    data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
+    var.additional_subnets,
+  ])
   kubeconfig_name                 = "${var.eks_cluster_name}-${var.environment}-eks"
   cluster_version                 = var.cluster_version
   config_output_path              = var.config_output_path
   cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   cluster_endpoint_private_access = var.cluster_endpoint_private_access
   cluster_endpoint_public_access  = var.cluster_endpoint_public_access
-  workers_additional_policies     = concat(
-                                      var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
-                                      var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
-                                      )
+  workers_additional_policies = concat(
+    var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
+  )
   manage_cluster_iam_resources     = var.manage_cluster_iam_resources
   manage_worker_iam_resources      = var.manage_worker_iam_resources
   manage_worker_autoscaling_policy = var.manage_worker_autoscaling_policy
@@ -80,8 +80,8 @@ resource "aws_security_group_rule" "allow_additional_cidr_443_ingress" {
 resource "aws_iam_policy" "dynamic_persistent_volume_provisioning" {
   count = var.enable_dynamic_pv ? 1 : 0
 
-  name = "k8sDynamicPVProvisioning"
-  path = "/"
+  name        = "k8sDynamicPVProvisioning"
+  path        = "/"
   description = "Allows EKS nodes to dynamically create and manage ec2 volumes"
 
   policy = <<EOF
@@ -115,8 +115,8 @@ EOF
 resource "aws_iam_policy" "external_dns_policy" {
   count = var.enable_external_dns ? 1 : 0
 
-  name = "K8sExternalDNSPolicy"
-  path = "/"
+  name        = "K8sExternalDNSPolicy"
+  path        = "/"
   description = "Allows EKS nodes to modify Route53 to support ExternalDNS."
 
   policy = <<EOF
