@@ -123,6 +123,11 @@ resource "aws_iam_policy" "external_dns_policy" {
     "Version": "2012-10-17",
     "Statement": [
       {
+            "Effect": "Allow",
+            "Action": "route53:GetChange",
+            "Resource": "arn:aws:route53:::change/*"
+      },
+      {
         "Effect": "Allow",
         "Action": [
           "route53:ListHostedZones",
