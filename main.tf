@@ -55,8 +55,8 @@ module "eks" {
   ])
   workers_additional_policies = compact([
     var.enable_external_dns ? aws_iam_policy.external_dns_policy[0].arn : "",
-    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
-  ])
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""]
+  )
 
   tags = {
     Environment = var.environment
@@ -79,7 +79,7 @@ resource "aws_security_group_rule" "allow_additional_cidr_443_ingress" {
 resource "aws_iam_policy" "dynamic_persistent_volume_provisioning" {
   count = var.enable_dynamic_pv ? 1 : 0
 
-  name        = "k8sDynamicPVProvisioning"
+  name        = "k8sDynamicPVProvisioning-${var.eks_cluster_name}"
   path        = "/"
   description = "Allows EKS nodes to dynamically create and manage ec2 volumes"
 
@@ -114,7 +114,7 @@ EOF
 resource "aws_iam_policy" "external_dns_policy" {
   count = var.enable_external_dns ? 1 : 0
 
-  name        = "K8sExternalDNSPolicy"
+  name        = "K8sExternalDNSPolicy-${var.eks_cluster_name}"
   path        = "/"
   description = "Allows EKS nodes to modify Route53 to support ExternalDNS."
 
