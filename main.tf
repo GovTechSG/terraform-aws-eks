@@ -53,10 +53,11 @@ module "eks" {
     data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
     var.additional_subnets,
   ])
-  workers_additional_policies = concat(
-    var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
-    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
-  )
+  workers_additional_policies = compact([
+    var.enable_external_dns ? aws_iam_policy.external_dns_policy[0].arn : "",
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
+  ])
+
   tags = {
     Environment = var.environment
     Name        = var.eks_cluster_name
