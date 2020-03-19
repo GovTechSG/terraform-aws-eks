@@ -63,10 +63,10 @@ output "worker_additional_policies" {
 
 output "external_dns_policy" {
   description = "external dns policy arn"
-  value       = aws_iam_policy.external_dns_policy.*.arn
+  value       = var.enable_external_dns ? aws_iam_policy.external_dns_policy[0].arn : ""
 }
 
 output "dynamic_persistent_volume_provisioning" {
   description = "Dynamic PV policy"
-  value       = aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn
+  value       = var.enable_external_dns ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
 }
