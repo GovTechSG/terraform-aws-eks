@@ -68,5 +68,5 @@ output "external_dns_policy" {
 
 output "dynamic_persistent_volume_provisioning" {
   description = "Dynamic PV policy"
-  value       = var.enable_external_dns ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
+  value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
 }
