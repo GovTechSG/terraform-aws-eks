@@ -44,6 +44,7 @@ module "eks" {
   cluster_iam_role_name           = var.cluster_iam_role_name
   permissions_boundary            = var.permissions_boundary
   map_users                       = var.map_users
+  map_roles                       = var.map_roles
   worker_groups                   = local.worker_groups
   vpc_id                          = data.terraform_remote_state.vpc.outputs.vpc_id
 
