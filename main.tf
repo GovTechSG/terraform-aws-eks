@@ -322,8 +322,8 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "alb-attach" {
   count = var.enable_alb? 1 : 0
-  role       = "${aws_iam_role.alb-role[0].name}"
-  policy_arn = "${aws_iam_policy.alb-ingresscontroller-policy[0].arn}"
+  role       = aws_iam_role.alb-role[0].name
+  policy_arn = aws_iam_policy.alb-ingresscontroller-policy[0].arn
 }
 
 data "terraform_remote_state" "vpc" {
