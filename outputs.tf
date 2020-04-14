@@ -86,12 +86,7 @@ output "dynamic_persistent_volume_provisioning_arn" {
   value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning[0].arn : ""
 }
 
-output "alb_policy_arn" {
-  description = "alb policy arn"
-  value       = var.enable_alb ? aws_iam_policy.alb-ingresscontroller-policy[0].arn: ""
-}
-
-output "kube2iam_role_arn" {
-  description = "kube2iam IAM role ARN"
-  value       = var.enable_kube2iam ? aws_iam_role.kube2iam-role[0].arn : ""
+output "alb_role_arn" {
+  description = "alb role arn"
+  value       = var.enable_alb ? aws_iam_policy.alb-role[0].arn: ""
 }

@@ -152,9 +152,9 @@ resource "aws_iam_policy" "external-dns-policy" {
 EOF
 }
 
-resource "aws_iam_role" "kube2iam-role" {
-  count = var.enable_kube2iam? 1 : 0
-  name = "kube2iam-role-${var.eks_cluster_name}"
+resource "aws_iam_role" "alb-role" {
+  count = var.enable_alb? 1 : 0
+  name = "alb-role-${var.eks_cluster_name}"
   permissions_boundary = var.permissions_boundary
   assume_role_policy = <<EOF
 {
@@ -180,7 +180,6 @@ resource "aws_iam_role" "kube2iam-role" {
 }
 EOF
 }
-
 
 resource "aws_iam_policy" "alb-ingresscontroller-policy" {
   count = var.enable_alb? 1 : 0
@@ -319,6 +318,12 @@ resource "aws_iam_policy" "alb-ingresscontroller-policy" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_role_policy_attachment" "alb-attach" {
+  count = var.enable_alb? 1 : 0
+  role       = "${aws_iam_role.alb-role[0].name}"
+  policy_arn = "${aws_iam_policy.alb-ingresscontroller-policy[0].arn}"
 }
 
 data "terraform_remote_state" "vpc" {
