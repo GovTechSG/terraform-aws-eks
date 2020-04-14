@@ -63,12 +63,12 @@ output "worker_additional_policies" {
 
 output "worker_iam_role_name" {
   description = "default IAM role name for EKS worker groups"
-  value = module.eks.worker_iam_role_name
+  value       = module.eks.worker_iam_role_name
 }
 
 output "worker_iam_role_arn" {
   description = "default IAM role ARN for EKS worker groups"
-  value = module.eks.worker_iam_role_arn
+  value       = module.eks.worker_iam_role_arn
 }
 
 output "node_groups" {
@@ -76,9 +76,9 @@ output "node_groups" {
   value       = module.eks.node_groups
 }
 
-output "external_dns_policy_arn" {
-  description = "external dns policy arn"
-  value       = var.enable_external_dns ? aws_iam_policy.external-dns-policy[0].arn : ""
+output "external_dns_role_arn" {
+  description = "external role arn"
+  value       = var.enable_external_dns ? aws_iam_role.external-dns-role[0].arn : ""
 }
 
 output "dynamic_persistent_volume_provisioning_arn" {
@@ -88,5 +88,5 @@ output "dynamic_persistent_volume_provisioning_arn" {
 
 output "alb_role_arn" {
   description = "alb role arn"
-  value       = var.enable_alb ? aws_iam_role.alb-role[0].arn: ""
+  value       = var.enable_alb ? aws_iam_role.alb-role[0].arn : ""
 }

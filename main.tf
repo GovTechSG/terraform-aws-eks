@@ -55,7 +55,6 @@ module "eks" {
     var.additional_subnets,
   ])
   workers_additional_policies = concat(
-    var.enable_external_dns ? aws_iam_policy.external-dns-policy.*.arn : [],
     var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : []
   )
 
@@ -111,6 +110,35 @@ resource "aws_iam_policy" "dynamic-persistent-volume-provisioning" {
 EOF
 }
 
+resource "aws_iam_role" "external-dns-role" {
+  count                = var.enable_external_dns ? 1 : 0
+  name                 = "external-dns-role-${var.eks_cluster_name}"
+  permissions_boundary = var.permissions_boundary
+  assume_role_policy   = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${module.eks.worker_iam_role_arn}"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
 
 resource "aws_iam_policy" "external-dns-policy" {
   count = var.enable_external_dns ? 1 : 0
@@ -152,11 +180,18 @@ resource "aws_iam_policy" "external-dns-policy" {
 EOF
 }
 
+resource "aws_iam_role_policy_attachment" "external-dns-attach" {
+  count      = var.enable_external_dns ? 1 : 0
+  role       = aws_iam_role.external-dns-role[0].name
+  policy_arn = aws_iam_policy.external-dns-policy[0].arn
+}
+
+
 resource "aws_iam_role" "alb-role" {
-  count = var.enable_alb? 1 : 0
-  name = "alb-role-${var.eks_cluster_name}"
+  count                = var.enable_alb ? 1 : 0
+  name                 = "alb-role-${var.eks_cluster_name}"
   permissions_boundary = var.permissions_boundary
-  assume_role_policy = <<EOF
+  assume_role_policy   = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -182,7 +217,7 @@ EOF
 }
 
 resource "aws_iam_policy" "alb-ingresscontroller-policy" {
-  count = var.enable_alb? 1 : 0
+  count       = var.enable_alb ? 1 : 0
   name        = "alb-ingress-controller-policy-${var.eks_cluster_name}"
   description = "Policy for alb ingress controller pod to create alb resources"
 
@@ -321,7 +356,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "alb-attach" {
-  count = var.enable_alb? 1 : 0
+  count      = var.enable_alb ? 1 : 0
   role       = aws_iam_role.alb-role[0].name
   policy_arn = aws_iam_policy.alb-ingresscontroller-policy[0].arn
 }
