@@ -88,5 +88,5 @@ output "dynamic_persistent_volume_provisioning_arn" {
 
 output "alb_role_arn" {
   description = "alb role arn"
-  value       = var.enable_alb ? aws_iam_policy.alb-role[0].arn: ""
+  value       = var.enable_alb ? aws_iam_role.alb-role[0].arn: ""
 }
