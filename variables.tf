@@ -61,6 +61,12 @@ variable "enable_kube2iam" {
   default     = false
 }
 
+variable "enable_alb" {
+  description = "Enables alb by creating alb ingress controller policy required for alb ingress controller"
+  type        = bool
+  default     = false
+}
+
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster. Also used as a prefix in names of related resources."
   type        = string

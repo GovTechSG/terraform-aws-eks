@@ -76,14 +76,19 @@ output "node_groups" {
   value       = module.eks.node_groups
 }
 
-output "external_dns_policy" {
+output "external_dns_policy_arn" {
   description = "external dns policy arn"
   value       = var.enable_external_dns ? aws_iam_policy.external-dns-policy[0].arn : ""
 }
 
-output "dynamic_persistent_volume_provisioning" {
+output "dynamic_persistent_volume_provisioning_arn" {
   description = "Dynamic PV policy"
   value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning[0].arn : ""
+}
+
+output "alb_policy" {
+  description = "alb policy json"
+  value       = var.enable_alb ? aws_iam_policy.alb-ingresscontroller-policy[0].policy : ""
 }
 
 output "kube2iam_role_arn" {

@@ -182,10 +182,10 @@ EOF
 }
 
 
-resource "aws_iam_policy" "kube2iam-policy" {
-  count = var.enable_kube2iam? 1 : 0
-  name        = "kube2iam-policy-${var.eks_cluster_name}"
-  description = "A test policy"
+resource "aws_iam_policy" "alb-ingresscontroller-policy" {
+  count = var.enable_alb? 1 : 0
+  name        = "alb-ingress-controller-policy-${var.eks_cluster_name}"
+  description = "Policy for alb ingress controller pod to create alb resources"
 
   policy = <<EOF
 {
@@ -319,12 +319,6 @@ resource "aws_iam_policy" "kube2iam-policy" {
   ]
 }
 EOF
-}
-
-resource "aws_iam_role_policy_attachment" "kube2iam-attach" {
-  count = var.enable_kube2iam? 1 : 0
-  role       = "${aws_iam_role.kube2iam-role[0].name}"
-  policy_arn = "${aws_iam_policy.kube2iam-policy[0].arn}"
 }
 
 data "terraform_remote_state" "vpc" {
