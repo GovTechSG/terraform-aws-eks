@@ -82,13 +82,13 @@ output "external_dns_policy_arn" {
 }
 
 output "dynamic_persistent_volume_provisioning_arn" {
-  description = "Dynamic PV policy"
+  description = "Dynamic PV policy arn"
   value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning[0].arn : ""
 }
 
-output "alb_policy" {
-  description = "alb policy json"
-  value       = var.enable_alb ? aws_iam_policy.alb-ingresscontroller-policy[0].policy : ""
+output "alb_policy_arn" {
+  description = "alb policy arn"
+  value       = var.enable_alb ? aws_iam_policy.alb-ingresscontroller-policy[0].arn: ""
 }
 
 output "kube2iam_role_arn" {
