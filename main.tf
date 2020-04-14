@@ -155,7 +155,7 @@ EOF
 resource "aws_iam_role" "kube2iam-role" {
   count = var.enable_kube2iam? 1 : 0
   name = "kube2iam-role-${var.eks_cluster_name}"
-
+  permissions_boundary = var.permissions_boundary
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
