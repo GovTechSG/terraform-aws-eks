@@ -55,6 +55,12 @@ variable "enable_dynamic_pv" {
   default     = false
 }
 
+variable "enable_kube2iam" {
+  description = "Enables kube2iam by creating role, policy and trust relationship required for kube2iam usage"
+  type        = bool
+  default     = false
+}
+
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster. Also used as a prefix in names of related resources."
   type        = string

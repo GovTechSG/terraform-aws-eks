@@ -56,8 +56,8 @@ output "workers_user_data" {
 output "worker_additional_policies" {
   description = "Additional policies added to the worker iam role"
   value = concat(
-    var.enable_external_dns ? aws_iam_policy.external_dns_policy.*.arn : [],
-    var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning.*.arn : []
+    var.enable_external_dns ? aws_iam_policy.external-dns-policy.*.arn : [],
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : []
   )
 }
 
@@ -78,10 +78,15 @@ output "node_groups" {
 
 output "external_dns_policy" {
   description = "external dns policy arn"
-  value       = var.enable_external_dns ? aws_iam_policy.external_dns_policy[0].arn : ""
+  value       = var.enable_external_dns ? aws_iam_policy.external-dns-policy[0].arn : ""
 }
 
 output "dynamic_persistent_volume_provisioning" {
   description = "Dynamic PV policy"
-  value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic_persistent_volume_provisioning[0].arn : ""
+  value       = var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning[0].arn : ""
+}
+
+output "kube2iam_role_arn" {
+  description = "kube2iam IAM role ARN"
+  value       = var.enable_kube2iam ? aws_iam_role.kube2iam-role[0].arn : ""
 }
