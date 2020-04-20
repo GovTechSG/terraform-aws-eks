@@ -398,7 +398,7 @@ resource "aws_iam_policy" "kamus-kms-policy" {
   policy = <<EOF
 {
   "Version": "2012-10-17",
-  "Statement": [
+  "Statement": {
     "Effect": "Allow",
     "Action": [
       "kms:Encrypt",
@@ -408,7 +408,7 @@ resource "aws_iam_policy" "kamus-kms-policy" {
     "Resource": [
       "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:key/kamus*"
     ]
-  ]
+  }
 }
 EOF
 }
