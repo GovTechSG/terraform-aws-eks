@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "aws_account_id" {
   description = "AWS account ID"
-  decault     = "*"
+  default     = "*"
 }
 
 variable "additional_subnets" {
