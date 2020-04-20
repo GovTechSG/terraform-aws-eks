@@ -361,6 +361,64 @@ resource "aws_iam_role_policy_attachment" "alb-attach" {
   policy_arn = aws_iam_policy.alb-ingresscontroller-policy[0].arn
 }
 
+resource "aws_iam_role" "kamus-role" {
+  count                = var.enable_kamus ? 1 : 0
+  name                 = "kamus-role-${var.eks_cluster_name}"
+  permissions_boundary = var.permissions_boundary
+  assume_role_policy   = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "${module.eks.worker_iam_role_arn}"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "kamus-kms-policy" {
+  count       = var.enable_kamus? 1 : 0
+  name        = "kamus-kms-policy-${var.eks_cluster_name}"
+  description = "Policy for kamus to encrypt, decrypt and generateDataKey for k8s secrets"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    "Effect": "Allow",
+    "Action": [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ],
+    "Resource": [
+      "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:key/kamus*"
+    ]
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "kamus-attach" {
+  count      = var.enable_kamus? 1 : 0
+  role       = aws_iam_role.kamus-role[0].name
+  policy_arn = aws_iam_policy.kamus-kms-policy[0].arn
+}
+
 data "terraform_remote_state" "vpc" {
   backend = "s3"
 

@@ -3,6 +3,11 @@ variable "aws_region" {
   default     = "ap-southeast-1"
 }
 
+variable "aws_account_id" {
+  description = "AWS account ID"
+  decault     = "*"
+}
+
 variable "additional_subnets" {
   description = "Additional Subnets aside from those in your main vpc(e.g secondary cidr blocks)"
   type        = list
@@ -51,6 +56,12 @@ variable "enable_external_dns" {
 
 variable "enable_dynamic_pv" {
   description = "Enables dynamic persistent volume provisioning by allowing nodes to manage ec2 volumes and attaches policy to worker groups"
+  type        = bool
+  default     = false
+}
+
+variable "enable_kamus" {
+  description = "Enables kamus by creating role, policy and trust relationship required for kamus usage"
   type        = bool
   default     = false
 }
