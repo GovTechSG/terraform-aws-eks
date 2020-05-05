@@ -93,5 +93,5 @@ output "alb_role_arn" {
 
 output "kamus_role_arn" {
   description = "kamus role arn"
-  value       = var.enable_kamus? aws_iam_role.kamus-role[0].arn : ""
+  value       = var.enable_kamus ? aws_iam_role.kamus-role[0].arn : ""
 }
