@@ -45,7 +45,7 @@ module "eks" {
   kubeconfig_aws_authenticator_command_args    = var.kubeconfig_aws_authenticator_command_args
   kubeconfig_aws_authenticator_additional_args = var.kubeconfig_aws_authenticator_additional_args
   kubeconfig_aws_authenticator_env_variables   = var.kubeconfig_aws_authenticator_env_variables
-g
+
   manage_cluster_iam_resources = var.manage_cluster_iam_resources
   manage_worker_iam_resources  = var.manage_worker_iam_resources
   permissions_boundary         = var.permissions_boundary
