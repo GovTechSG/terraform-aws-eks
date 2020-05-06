@@ -429,6 +429,7 @@ resource "aws_iam_policy" "kamus-kms-policy" {
       "Action": "kms:CreateKey",
       "Resource": "*"
     }
+  ]
 }
 EOF
 }
