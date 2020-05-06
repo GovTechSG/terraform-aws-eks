@@ -45,7 +45,7 @@ module "eks" {
   kubeconfig_aws_authenticator_command_args    = var.kubeconfig_aws_authenticator_command_args
   kubeconfig_aws_authenticator_additional_args = var.kubeconfig_aws_authenticator_additional_args
   kubeconfig_aws_authenticator_env_variables   = var.kubeconfig_aws_authenticator_env_variables
-
+g
   manage_cluster_iam_resources = var.manage_cluster_iam_resources
   manage_worker_iam_resources  = var.manage_worker_iam_resources
   permissions_boundary         = var.permissions_boundary
@@ -404,17 +404,31 @@ resource "aws_iam_policy" "kamus-kms-policy" {
   policy = <<EOF
 {
   "Version": "2012-10-17",
-  "Statement": {
-    "Effect": "Allow",
-    "Action": [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:GenerateDataKey"
-    ],
-    "Resource": [
-      "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:key/kamus*"
-    ]
-  }
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Encrypt",
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": [
+        "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:key/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:CreateAlias",
+      "Resource": [
+        "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:alias/kamus*",
+        "arn:aws:kms:${var.aws_region}:${var.aws_account_id}:key/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kms:CreateKey",
+      "Resource": "*"
+    }
 }
 EOF
 }
