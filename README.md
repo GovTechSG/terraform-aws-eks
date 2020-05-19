@@ -109,6 +109,7 @@ module "eks" {
 | tfstate\_global\_bucket | S3 where the remote state is stored | string | n/a | yes |
 | vpc\_name | VPC Name | string | n/a | yes |
 | vpc\_state\_key | Key where the vpc remote state is stored | string | `"vpc"` | no |
+| worker\_additional\_security\_group\_ids | A list of additional security group ids to attach to worker instances | list | `[]]` | no |
 | write\_aws\_auth\_config | Whether to write the aws-auth configmap file. | bool | `"true"` | no |
 | write\_kubeconfig | Whether to write a Kubectl config file containing the cluster configuration. Saved to `config_output_path`. | bool | `"true"` | no |
 

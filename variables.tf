@@ -224,3 +224,9 @@ variable "kubeconfig_aws_authenticator_env_variables" {
   type        = map(string)
   default     = {}
 }
+
+variable "worker_additional_security_group_ids" {
+  description = "A list of additional security group ids to attach to worker instances."
+  type        = list
+  default     = []
+}
