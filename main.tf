@@ -30,15 +30,15 @@ locals {
 # references:
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  source                                       = "terraform-aws-modules/eks/aws"
-  version                                      = "10.0.0"
-  config_output_path                           = var.config_output_path
-  cluster_name                                 = var.eks_cluster_name
-  cluster_version                              = var.cluster_version
-  cluster_enabled_log_types                    = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  cluster_endpoint_private_access              = var.cluster_endpoint_private_access
-  cluster_endpoint_public_access               = var.cluster_endpoint_public_access
-  cluster_iam_role_name                        = var.cluster_iam_role_name
+  source                          = "terraform-aws-modules/eks/aws"
+  version                         = "10.0.0"
+  config_output_path              = var.config_output_path
+  cluster_name                    = var.eks_cluster_name
+  cluster_version                 = var.cluster_version
+  cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cluster_endpoint_private_access = var.cluster_endpoint_private_access
+  cluster_endpoint_public_access  = var.cluster_endpoint_public_access
+  cluster_iam_role_name           = var.cluster_iam_role_name
 
   kubeconfig_name                              = "${var.eks_cluster_name}-${var.environment}-eks"
   kubeconfig_aws_authenticator_command         = var.kubeconfig_aws_authenticator_command
@@ -46,13 +46,14 @@ module "eks" {
   kubeconfig_aws_authenticator_additional_args = var.kubeconfig_aws_authenticator_additional_args
   kubeconfig_aws_authenticator_env_variables   = var.kubeconfig_aws_authenticator_env_variables
 
-  manage_cluster_iam_resources = var.manage_cluster_iam_resources
-  manage_worker_iam_resources  = var.manage_worker_iam_resources
-  permissions_boundary         = var.permissions_boundary
-  map_users                    = var.map_users
-  map_roles                    = var.map_roles
-  worker_groups                = local.worker_groups
-  vpc_id                       = data.terraform_remote_state.vpc.outputs.vpc_id
+  manage_cluster_iam_resources  = var.manage_cluster_iam_resources
+  manage_worker_iam_resources   = var.manage_worker_iam_resources
+  permissions_boundary          = var.permissions_boundary
+  map_users                     = var.map_users
+  map_roles                     = var.map_roles
+  worker_groups                 = var.use_launch_template ? [] : local.worker_groups
+  worker_groups_launch_template = var.use_launch_template ? local.worker_groups : []
+  vpc_id                        = data.terraform_remote_state.vpc.outputs.vpc_id
 
   subnets = flatten([
     data.terraform_remote_state.vpc.outputs.private_subnets_ids,

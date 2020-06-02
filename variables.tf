@@ -108,6 +108,12 @@ variable "intranet_worker_variables" {
   default     = []
 }
 
+variable "use_launch_template" {
+  description = "Toggle use of launch template vs launch configuration"
+  type        = bool
+  default     = false
+}
+
 variable "write_kubeconfig" {
   description = "Whether to write a Kubectl config file containing the cluster configuration. Saved to `config_output_path`."
   type        = bool
