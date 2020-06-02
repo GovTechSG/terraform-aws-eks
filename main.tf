@@ -25,6 +25,25 @@ locals {
   ]
 
   worker_groups = flatten([local.private_worker_groups, local.public_worker_groups, local.intranet_worker_groups])
+
+  private_worker_groups_launch_template = [
+    for private_worker in var.private_worker_template_variables : merge({
+      subnets = data.terraform_remote_state.vpc.outputs.private_subnets_ids
+    }, private_worker)
+  ]
+
+  public_worker_groups_launch_template  = [for public_worker in var.public_worker_template_variables : merge({
+    subnets = data.terraform_remote_state.vpc.outputs.public_subnets_ids
+    }, public_worker)
+  ]
+
+  intranet_worker_groups_launch_template  = [for intranet_worker in var.intranet_worker_template_variables : merge({
+    subnets = data.terraform_remote_state.vpc.outputs.intra_subnets_ids
+    }, intranet_worker)
+  ]
+
+  worker_groups_launch_template = flatten([local.private_worker_groups_launch_template , local.public_worker_groups_launch_template , local.intranet_worker_groups_launch_template ])
+
 }
 
 # references:
@@ -51,8 +70,8 @@ module "eks" {
   permissions_boundary          = var.permissions_boundary
   map_users                     = var.map_users
   map_roles                     = var.map_roles
-  worker_groups                 = var.use_launch_template ? [] : local.worker_groups
-  worker_groups_launch_template = var.use_launch_template ? local.worker_groups : []
+  worker_groups                 = local.worker_groups
+  worker_groups_launch_template = local.worker_groups_launch_template
   vpc_id                        = data.terraform_remote_state.vpc.outputs.vpc_id
 
   subnets = flatten([

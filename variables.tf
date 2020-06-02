@@ -108,6 +108,12 @@ variable "intranet_worker_variables" {
   default     = []
 }
 
+variable "intranet_worker_template_variables" {
+  description = "Worker launch template group declaration of nodes to be placed in intranet subnet"
+  type        = list
+  default     = []
+}
+
 variable "use_launch_template" {
   description = "Toggle use of launch template vs launch configuration"
   type        = bool
@@ -171,8 +177,20 @@ variable "private_worker_variables" {
   default     = []
 }
 
+variable "private_worker_template_variables" {
+  description = "Worker launch template group declaration of nodes to be placed in private subnet"
+  type        = list
+  default     = []
+}
+
 variable "public_worker_variables" {
   description = "Worker group declaration of nodes to be placed in public subnet"
+  type        = list
+  default     = []
+}
+
+variable "public_worker_template_variables" {
+  description = "Worker launch template group declaration of nodes to be placed in public subnet"
   type        = list
   default     = []
 }
