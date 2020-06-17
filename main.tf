@@ -1,12 +1,3 @@
-terraform {
-  backend "s3" {}
-  required_version = "~> 0.12.0"
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
 locals {
   private_worker_groups = [
     for private_worker in var.private_worker_variables : merge({
