@@ -43,6 +43,11 @@ output "workers_asg_names" {
   value       = module.eks.workers_asg_names
 }
 
+output "worker_security_group_id" {
+  description = "Security group ID attached to the EKS workers."
+  value       = module.eks.worker_security_group_id
+}
+
 output "workers_launch_template_ids" {
   description = "IDs of the worker launch templates."
   value       = module.eks.workers_launch_template_ids
