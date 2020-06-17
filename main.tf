@@ -87,7 +87,6 @@ module "eks" {
 
   tags = {
     Environment = var.environment
-    Name        = var.eks_cluster_name
   }
 }
 
