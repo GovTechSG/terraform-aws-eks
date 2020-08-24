@@ -23,32 +23,34 @@ locals {
     }, private_worker)
   ]
 
-  public_worker_groups_launch_template  = [for public_worker in var.public_worker_template_variables : merge({
+  public_worker_groups_launch_template = [for public_worker in var.public_worker_template_variables : merge({
     subnets = data.terraform_remote_state.vpc.outputs.public_subnets_ids
     }, public_worker)
   ]
 
-  intranet_worker_groups_launch_template  = [for intranet_worker in var.intranet_worker_template_variables : merge({
+  intranet_worker_groups_launch_template = [for intranet_worker in var.intranet_worker_template_variables : merge({
     subnets = data.terraform_remote_state.vpc.outputs.intra_subnets_ids
     }, intranet_worker)
   ]
 
-  worker_groups_launch_template = flatten([local.private_worker_groups_launch_template , local.public_worker_groups_launch_template , local.intranet_worker_groups_launch_template ])
+  worker_groups_launch_template = flatten([local.private_worker_groups_launch_template, local.public_worker_groups_launch_template, local.intranet_worker_groups_launch_template])
 
 }
 
 # references:
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  source                          = "terraform-aws-modules/eks/aws"
-  version                         = "10.0.0"
-  config_output_path              = var.config_output_path
-  cluster_name                    = var.eks_cluster_name
-  cluster_version                 = var.cluster_version
-  cluster_enabled_log_types       = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  cluster_endpoint_private_access = var.cluster_endpoint_private_access
-  cluster_endpoint_public_access  = var.cluster_endpoint_public_access
-  cluster_iam_role_name           = var.cluster_iam_role_name
+  source                                = "terraform-aws-modules/eks/aws"
+  version                               = "10.0.0"
+  config_output_path                    = var.config_output_path
+  cluster_name                          = var.eks_cluster_name
+  cluster_version                       = var.cluster_version
+  cluster_enabled_log_types             = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cluster_endpoint_private_access       = var.cluster_endpoint_private_access
+  cluster_endpoint_public_access        = var.cluster_endpoint_public_access
+  cluster_endpoint_private_access_cidrs = var.cluster_endpoint_private_access_cidrs
+  cluster_endpoint_public_access_cidrs  = var.cluster_endpoint_public_access_cidrs
+  cluster_iam_role_name                 = var.cluster_iam_role_name
 
   kubeconfig_name                              = "${var.eks_cluster_name}-${var.environment}-eks"
   kubeconfig_aws_authenticator_command         = var.kubeconfig_aws_authenticator_command
