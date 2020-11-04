@@ -41,7 +41,7 @@ locals {
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source                                = "terraform-aws-modules/eks/aws"
-  version                               = "10.0.0"
+  version                               = "12.2.0"
   config_output_path                    = var.config_output_path
   cluster_name                          = var.eks_cluster_name
   cluster_version                       = var.cluster_version
