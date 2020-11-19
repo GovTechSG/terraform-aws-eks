@@ -42,7 +42,7 @@ locals {
 module "eks" {
   // source                                = "terraform-aws-modules/eks/aws"
   // version                               = "12.2.0"
-  source                                         = "git::https://gitlab.com/govtechsingapore/gdsace/terraform-modules/aws-eks.git"
+  source                                         = "git::https://github.com/ryanoolala/terraform-aws-eks.git"
   config_output_path                             = var.config_output_path
   cluster_name                                   = var.eks_cluster_name
   cluster_version                                = var.cluster_version
