@@ -73,7 +73,7 @@ module "eks" {
   create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
   fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
   fargate_profiles                  = var.fargate_profiles
-  fargate_subnets                   = data.terraform_remote_state.vpc.outputs.private_subnets_ids
+  fargate_subnets                   = length(var.fargate_subnets) > 0 ? var.fargate.subnets : data.terraform_remote_state.vpc.outputs.private_subnets_ids
 
   subnets = flatten([
     data.terraform_remote_state.vpc.outputs.private_subnets_ids,
