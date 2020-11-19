@@ -50,6 +50,12 @@ variable "cluster_endpoint_public_access_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "cluster_create_endpoint_private_access_sg_rule" {
+  description = "Whether to create security group rules for the access to the Amazon EKS private API server endpoint."
+  type        = bool
+  default     = false
+}
+
 variable "environment" {
   description = "Name for environment of this EKS cluster"
 }

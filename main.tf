@@ -42,15 +42,16 @@ locals {
 module "eks" {
   // source                                = "terraform-aws-modules/eks/aws"
   // version                               = "12.2.0"
-  source                               = "git::https://gitlab.com/govtechsingapore/gdsace/terraform-modules/aws-eks.git"
-  config_output_path                   = var.config_output_path
-  cluster_name                         = var.eks_cluster_name
-  cluster_version                      = var.cluster_version
-  cluster_enabled_log_types            = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  cluster_endpoint_private_access      = var.cluster_endpoint_private_access
-  cluster_endpoint_public_access       = var.cluster_endpoint_public_access
-  cluster_endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
-  cluster_iam_role_name                = var.cluster_iam_role_name
+  source                                         = "git::https://gitlab.com/govtechsingapore/gdsace/terraform-modules/aws-eks.git"
+  config_output_path                             = var.config_output_path
+  cluster_name                                   = var.eks_cluster_name
+  cluster_version                                = var.cluster_version
+  cluster_enabled_log_types                      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  cluster_endpoint_private_access                = var.cluster_endpoint_private_access
+  cluster_endpoint_public_access                 = var.cluster_endpoint_public_access
+  cluster_endpoint_public_access_cidrs           = var.cluster_endpoint_public_access_cidrs
+  cluster_create_endpoint_private_access_sg_rule = var.cluster_create_endpoint_private_access_sg_rule
+  cluster_iam_role_name                          = var.cluster_iam_role_name
 
   kubeconfig_name                              = "${var.eks_cluster_name}-${var.environment}-eks"
   kubeconfig_aws_authenticator_command         = var.kubeconfig_aws_authenticator_command
