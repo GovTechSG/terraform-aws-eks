@@ -292,3 +292,9 @@ variable "fargate_pod_execution_role_name" {
   type        = string
   default     = null
 }
+
+variable "fargate_subnet" {
+  description = "A list of subnets for the EKS Fargate profiles."
+  type        = list(string)
+  default     = []
+}

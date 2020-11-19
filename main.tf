@@ -42,7 +42,7 @@ locals {
 module "eks" {
   // source                                = "terraform-aws-modules/eks/aws"
   // version                               = "12.2.0"
-  source                                         = "git::https://github.com/ryanoolala/terraform-aws-eks.git"
+  source                                         = "git::https://github.com/ryanoolala/terraform-aws-eks.git?ref=modifed_fargate_subnet"
   config_output_path                             = var.config_output_path
   create_eks                                     = var.create_eks
   cluster_name                                   = var.eks_cluster_name
@@ -73,6 +73,7 @@ module "eks" {
   create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
   fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
   fargate_profiles                  = var.fargate_profiles
+  fargate_subnets                   = data.terraform_remote_state.vpc.outputs.private_subnets_ids
 
   subnets = flatten([
     data.terraform_remote_state.vpc.outputs.private_subnets_ids,
