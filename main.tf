@@ -68,6 +68,14 @@ module "eks" {
   worker_groups_launch_template = local.worker_groups_launch_template
   vpc_id                        = data.terraform_remote_state.vpc.outputs.vpc_id
 
+  #fargate
+  create_eks                        = var.create_eks
+  iam_path                          = var.iam_path
+  iam_policy_arn_prefix             = var.iam_policy_arn_prefix
+  create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
+  fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
+  fargate_profiles                  = var.fargate_profiles
+
   subnets = flatten([
     data.terraform_remote_state.vpc.outputs.private_subnets_ids,
     data.terraform_remote_state.vpc.outputs.public_subnets_ids,
