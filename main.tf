@@ -44,6 +44,7 @@ module "eks" {
   // version                               = "12.2.0"
   source                                         = "git::https://github.com/ryanoolala/terraform-aws-eks.git"
   config_output_path                             = var.config_output_path
+  create_eks                                     = var.create_eks
   cluster_name                                   = var.eks_cluster_name
   cluster_version                                = var.cluster_version
   cluster_enabled_log_types                      = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -69,9 +70,6 @@ module "eks" {
   vpc_id                        = data.terraform_remote_state.vpc.outputs.vpc_id
 
   #fargate
-  create_eks                        = var.create_eks
-  iam_path                          = var.iam_path
-  iam_policy_arn_prefix             = var.iam_policy_arn_prefix
   create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
   fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
   fargate_profiles                  = var.fargate_profiles
