@@ -40,9 +40,8 @@ locals {
 # references:
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  // source                                = "terraform-aws-modules/eks/aws"
-  // version                               = "12.2.0"
-  source                                         = "git::https://github.com/ryanoolala/terraform-aws-eks.git?ref=modified_fargate_subnet"
+  source                                         = "terraform-aws-modules/eks/aws"
+  version                                        = "13.2.1"
   config_output_path                             = var.config_output_path
   create_eks                                     = var.create_eks
   cluster_name                                   = var.eks_cluster_name
