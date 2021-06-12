@@ -10,19 +10,19 @@ variable "aws_account_id" {
 
 variable "additional_subnets" {
   description = "Additional Subnets aside from those in your main vpc(e.g secondary cidr blocks)"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "additional_whitelist_cidr_block_443" {
   description = "Additional cidr to allow inbound and outbound for port 443 to eks cluster"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "additional_whitelist_cidr_block_443_description" {
   description = "Description for the additional cidr to allow inbound and outbound for port 443 to eks cluster"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -116,13 +116,13 @@ variable "config_output_path" {
 
 variable "intranet_worker_variables" {
   description = "Worker group declaration of nodes to be placed in intranet subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "intranet_worker_template_variables" {
   description = "Worker launch template group declaration of nodes to be placed in intranet subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -185,25 +185,25 @@ variable "module_source_version" {
 
 variable "private_worker_variables" {
   description = "Worker group declaration of nodes to be placed in private subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "private_worker_template_variables" {
   description = "Worker launch template group declaration of nodes to be placed in private subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "public_worker_variables" {
   description = "Worker group declaration of nodes to be placed in public subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
 variable "public_worker_template_variables" {
   description = "Worker launch template group declaration of nodes to be placed in public subnet"
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -263,7 +263,7 @@ variable "kubeconfig_aws_authenticator_env_variables" {
 
 variable "worker_additional_security_group_ids" {
   description = "A list of additional security group ids to attach to worker instances."
-  type        = list
+  type        = list(any)
   default     = []
 }
 
@@ -293,8 +293,39 @@ variable "fargate_pod_execution_role_name" {
   default     = null
 }
 
-variable "fargate_subnets" {
-  description = "A list of subnets for the EKS Fargate profiles."
-  type        = list(string)
-  default     = []
+# addons (v1.18+ only)
+variable "addon_create_vpc_cni" {
+  description = "Use EKS built-in addon VPC CNI"
+  type        = bool
+  default     = false
+}
+
+variable "addon_create_kube_proxy" {
+  description = "Use EKS built-in addon Kube Proxy"
+  type        = bool
+  default     = false
+}
+
+variable "addon_create_coredns" {
+  description = "Use EKS built-in addon CoreDNS"
+  type        = bool
+  default     = false
+}
+
+variable "addon_vpc_cni_version" {
+  description = "Specify VPC CNI addon version"
+  type        = string
+  default     = ""
+}
+
+variable "addon_kube_proxy_version" {
+  description = "Specify Kube Proxy addon version"
+  type        = string
+  default     = ""
+}
+
+variable "addon_coredns_version" {
+  description = "Specify CoreDNS addon version"
+  type        = string
+  default     = ""
 }
