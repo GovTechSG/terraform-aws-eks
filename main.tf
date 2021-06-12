@@ -72,7 +72,6 @@ module "eks" {
   create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
   fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
   fargate_profiles                  = var.fargate_profiles
-  fargate_subnets                   = length(var.fargate_subnets) > 0 ? var.fargate_subnets : data.terraform_remote_state.vpc.outputs.private_subnets_ids
 
   subnets = flatten([
     data.terraform_remote_state.vpc.outputs.private_subnets_ids,
@@ -458,6 +457,43 @@ resource "aws_iam_role_policy_attachment" "kamus-attach" {
   count      = var.enable_kamus ? 1 : 0
   role       = aws_iam_role.kamus-role[0].name
   policy_arn = aws_iam_policy.kamus-kms-policy[0].arn
+}
+
+resource "aws_eks_addon" "vpc-cni" {
+  count = var.addon_create_vpc_cni ? 1 : 0
+
+  cluster_name      = module.eks.cluster_id
+  addon_name        = "vpc-cni"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.addon_vpc_cni_version
+
+  timeouts {
+    update = "60m"
+  }
+
+  tags = var.tags
+}
+
+resource "aws_eks_addon" "kube-proxy" {
+  count = var.addon_create_kube_proxy ? 1 : 0
+
+  cluster_name      = module.eks.cluster_id
+  addon_name        = "kube-proxy"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.addon_kube_proxy_version
+
+  tags = var.tags
+}
+
+resource "aws_eks_addon" "coredns" {
+  count = var.addon_create_coredns ? 1 : 0
+
+  cluster_name      = module.eks.cluster_id
+  addon_name        = "coredns"
+  resolve_conflicts = "OVERWRITE"
+  addon_version     = var.addon_coredns_version
+
+  tags = var.tags
 }
 
 data "terraform_remote_state" "vpc" {
