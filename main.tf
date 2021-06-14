@@ -467,10 +467,6 @@ resource "aws_eks_addon" "vpc-cni" {
   resolve_conflicts = "OVERWRITE"
   addon_version     = var.addon_vpc_cni_version
 
-  timeouts {
-    update = "60m"
-  }
-
   tags = var.tags
 }
 
