@@ -56,6 +56,12 @@ variable "cluster_create_endpoint_private_access_sg_rule" {
   default     = false
 }
 
+variable "cluster_log_retention_in_days" {
+  description = "Log retention in days"
+  type        = number
+  default     = 99
+}
+
 variable "environment" {
   description = "Name for environment of this EKS cluster"
 }
