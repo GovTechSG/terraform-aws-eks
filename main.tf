@@ -52,6 +52,7 @@ module "eks" {
   cluster_endpoint_public_access_cidrs           = var.cluster_endpoint_public_access_cidrs
   cluster_create_endpoint_private_access_sg_rule = var.cluster_create_endpoint_private_access_sg_rule
   cluster_iam_role_name                          = var.cluster_iam_role_name
+  cluster_log_retention_in_days                  = var.cluster_log_retention_in_days
 
   kubeconfig_name                              = "${var.eks_cluster_name}-${var.environment}-eks"
   kubeconfig_aws_authenticator_command         = var.kubeconfig_aws_authenticator_command
