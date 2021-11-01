@@ -91,6 +91,7 @@ module "eks" {
 | cluster\_endpoint\_public\_access | Indicates whether or not the Amazon EKS public API server endpoint is enabled. | bool | `"true"` | no |
 | cluster\_iam\_role\_name | IAM role name for the cluster. Only applicable if manage_cluster_iam_resources is set to false. | string | `""` | no |
 | cluster\_version | Kubernetes version to use for the EKS cluster. | string | `"1.13"` | no |
+| cluster\_encryption\_config | Allow secrets encryption. | list(object(string)) | `{}` | no |
 | config\_output\_path | Where to save the Kubectl config file (if `write_kubeconfig = true`). Should end in a forward slash `/` . | string | `"./"` | no |
 | eks\_cluster\_name | Name of the EKS cluster. Also used as a prefix in names of related resources. | string | n/a | yes |
 | environment | Name for environment of this EKS cluster | string | n/a | yes |
