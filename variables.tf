@@ -59,7 +59,16 @@ variable "cluster_create_endpoint_private_access_sg_rule" {
 variable "cluster_log_retention_in_days" {
   description = "Log retention in days"
   type        = number
-  default     = 99
+  default     = 90
+}
+
+variable "cluster_encryption_config" {
+  description = "Configuration block with encryption configuration for the cluster. See examples/secrets_encryption/main.tf for example format"
+  type = list(object({
+    provider_key_arn = string
+    resources        = list(string)
+  }))
+  default = []
 }
 
 variable "environment" {

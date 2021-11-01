@@ -41,7 +41,7 @@ locals {
 # 1. https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
   source                                         = "terraform-aws-modules/eks/aws"
-  version                                        = "13.2.1"
+  version                                        = "15.2.0"
   config_output_path                             = var.config_output_path
   create_eks                                     = var.create_eks
   cluster_name                                   = var.eks_cluster_name
@@ -53,6 +53,7 @@ module "eks" {
   cluster_create_endpoint_private_access_sg_rule = var.cluster_create_endpoint_private_access_sg_rule
   cluster_iam_role_name                          = var.cluster_iam_role_name
   cluster_log_retention_in_days                  = var.cluster_log_retention_in_days
+  cluster_encryption_config                      = var.cluster_encryption_config
 
   kubeconfig_name                              = "${var.eks_cluster_name}-${var.environment}-eks"
   kubeconfig_aws_authenticator_command         = var.kubeconfig_aws_authenticator_command
