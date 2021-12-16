@@ -76,7 +76,13 @@ variable "environment" {
 }
 
 variable "enable_external_dns" {
-  description = "Enables External DNS installation(policy) and attaches policy to worker groups"
+  description = "(Legacy) Enables External DNS installation(policy) and attaches policy to worker groups"
+  type        = bool
+  default     = false
+}
+
+variable "enable_ssm" {
+  description = "Enables SSM and Inspector"
   type        = bool
   default     = false
 }
@@ -88,13 +94,13 @@ variable "enable_dynamic_pv" {
 }
 
 variable "enable_kamus" {
-  description = "Enables kamus by creating role, policy and trust relationship required for kamus usage"
+  description = "(Legacy) Enables kamus by creating role, policy and trust relationship required for kamus usage"
   type        = bool
   default     = false
 }
 
 variable "enable_kube2iam" {
-  description = "Enables kube2iam by creating role, policy and trust relationship required for kube2iam usage"
+  description = "(Legacy) Enables kube2iam by creating role, policy and trust relationship required for kube2iam usage"
   type        = bool
   default     = false
 }

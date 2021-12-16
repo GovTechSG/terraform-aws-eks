@@ -82,7 +82,8 @@ module "eks" {
     var.additional_subnets,
   ])
   workers_additional_policies = concat(
-    var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : []
+    var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : [],
+    var.enable_ssm ? ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"] : []
   )
   worker_additional_security_group_ids = var.worker_additional_security_group_ids
 
