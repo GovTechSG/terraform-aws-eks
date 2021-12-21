@@ -114,6 +114,10 @@ module "eks" {
 | write\_aws\_auth\_config | Whether to write the aws-auth configmap file. | bool | `"true"` | no |
 | write\_kubeconfig | Whether to write a Kubectl config file containing the cluster configuration. Saved to `config_output_path`. | bool | `"true"` | no |
 
+| Name     | Description                                                             | Type | Default | Required |
+|----------|-------------------------------------------------------------------------|:----:|:-------:|:--------:|
+|enable_ssm|Attach SSM policy to the instance role, which enables SSM and Inspector. | bool | false   | no       |
+
 ## Outputs
 
 | Name | Description |
