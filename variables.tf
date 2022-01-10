@@ -129,6 +129,30 @@ variable "vpc_name" {
   description = "VPC Name"
 }
 
+variable "vpc_id" {
+  description = "VPC ID"
+}
+
+variable "master_subnets_ids" {
+  description = "Subnets used by EKS master nodes"
+  type        = list(list(string))
+}
+
+variable "worker_public_subnets_ids" {
+  description = "Public subnets used by worker nodes"
+  type        = set(string)
+}
+
+variable "worker_private_subnets_ids" {
+  description = "Private subnets used by worker nodes"
+  type        = set(string)
+}
+
+variable "worker_intra_subnets_ids" {
+  description = "Intra subnets used by worker nodes"
+  type        = set(string)
+}
+
 variable "config_output_path" {
   description = "Where to save the Kubectl config file (if `write_kubeconfig = true`). Should end in a forward slash `/` ."
   type        = string

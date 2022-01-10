@@ -110,6 +110,11 @@ module "eks" {
 | tfstate\_global\_bucket | S3 where the remote state is stored | string | n/a | yes |
 | vpc\_name | VPC Name | string | n/a | yes |
 | vpc\_state\_key | Key where the vpc remote state is stored | string | `"vpc"` | no |
+| vpc_id | VPC ID | string | n/a | yes |
+| master_subnets_ids | Subnets used by master nodes | `list(list(string))` | `[["a1", "a2"], ["b1", "b2"]]` | yes |
+| worker_private_subnets_ids | Private subnets used by worker nodes | `list(string)` | `["a1", "a2"]` | yes |
+| worker_public_subnets_ids | Public subnets used by worker nodes | `list(string)` | `["a1", "a2"]` | yes |
+| worker_intra_subnets_ids | Intra subnets used by worker nodes | `list(string)` | `["a1", "a2"]` | yes |
 | worker\_additional\_security\_group\_ids | A list of additional security group ids to attach to worker instances | list | `[]]` | no |
 | write\_aws\_auth\_config | Whether to write the aws-auth configmap file. | bool | `"true"` | no |
 | write\_kubeconfig | Whether to write a Kubectl config file containing the cluster configuration. Saved to `config_output_path`. | bool | `"true"` | no |

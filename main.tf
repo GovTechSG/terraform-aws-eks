@@ -1,17 +1,17 @@
 locals {
   private_worker_groups = [
     for private_worker in var.private_worker_variables : merge({
-      subnets = data.terraform_remote_state.vpc.outputs.private_subnets_ids
+      subnets = var.worker_private_subnets_ids
     }, private_worker)
   ]
 
   public_worker_groups = [for public_worker in var.public_worker_variables : merge({
-    subnets = data.terraform_remote_state.vpc.outputs.public_subnets_ids
+    subnets = var.worker_public_subnets_ids
     }, public_worker)
   ]
 
   intranet_worker_groups = [for intranet_worker in var.intranet_worker_variables : merge({
-    subnets = data.terraform_remote_state.vpc.outputs.intra_subnets_ids
+    subnets = var.worker_intra_subnets_ids
     }, intranet_worker)
   ]
 
@@ -19,17 +19,17 @@ locals {
 
   private_worker_groups_launch_template = [
     for private_worker in var.private_worker_template_variables : merge({
-      subnets = data.terraform_remote_state.vpc.outputs.private_subnets_ids
+      subnets = var.worker_private_subnets_ids
     }, private_worker)
   ]
 
   public_worker_groups_launch_template = [for public_worker in var.public_worker_template_variables : merge({
-    subnets = data.terraform_remote_state.vpc.outputs.public_subnets_ids
+    subnets = var.worker_public_subnets_ids
     }, public_worker)
   ]
 
   intranet_worker_groups_launch_template = [for intranet_worker in var.intranet_worker_template_variables : merge({
-    subnets = data.terraform_remote_state.vpc.outputs.intra_subnets_ids
+    subnets = var.worker_intra_subnets_ids
     }, intranet_worker)
   ]
 
@@ -68,19 +68,15 @@ module "eks" {
   map_roles                     = var.map_roles
   worker_groups                 = local.worker_groups
   worker_groups_launch_template = local.worker_groups_launch_template
-  vpc_id                        = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id                        = var.vpc_id
 
   #fargate
   create_fargate_pod_execution_role = var.create_fargate_pod_execution_role
   fargate_pod_execution_role_name   = var.fargate_pod_execution_role_name
   fargate_profiles                  = var.fargate_profiles
 
-  subnets = flatten([
-    data.terraform_remote_state.vpc.outputs.private_subnets_ids,
-    data.terraform_remote_state.vpc.outputs.public_subnets_ids,
-    data.terraform_remote_state.vpc.outputs.intra_subnets_ids,
-    var.additional_subnets,
-  ])
+  subnets = flatten(var.master_subnets_ids)
+
   workers_additional_policies = concat(
     var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : [],
     var.enable_ssm ? ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"] : []
