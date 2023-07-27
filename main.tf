@@ -79,7 +79,8 @@ module "eks" {
 
   workers_additional_policies = concat(
     var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : [],
-    var.enable_ssm ? ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore","arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"] : []
+    var.enable_ssm ? ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore","arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"] : [],
+    "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   )
   worker_additional_security_group_ids = var.worker_additional_security_group_ids
 
