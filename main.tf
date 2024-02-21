@@ -35,6 +35,7 @@ locals {
 
   worker_groups_launch_template = flatten([local.private_worker_groups_launch_template, local.public_worker_groups_launch_template, local.intranet_worker_groups_launch_template])
 
+  has_custom_workers_policy = length(var.workers_custom_policy) > 0
 }
 
 # references:
@@ -80,7 +81,9 @@ module "eks" {
   workers_additional_policies = concat(
     var.enable_dynamic_pv ? aws_iam_policy.dynamic-persistent-volume-provisioning.*.arn : [],
     var.enable_ssm ? ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore","arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"] : [],
-    ["arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"]
+    ["arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"],
+    var.workers_additional_policies,
+    local.has_custom_workers_policy ? aws_iam_policy.custom_workers.*.arn : []
   )
   worker_additional_security_group_ids = var.worker_additional_security_group_ids
 
@@ -457,6 +460,14 @@ resource "aws_iam_role_policy_attachment" "kamus-attach" {
   count      = var.enable_kamus ? 1 : 0
   role       = aws_iam_role.kamus-role[0].name
   policy_arn = aws_iam_policy.kamus-kms-policy[0].arn
+}
+
+resource "aws_iam_policy" "custom_workers" {
+  count       = local.has_custom_workers_policy ? 1 : 0
+  name        = "workers-custom-policy-${var.eks_cluster_name}"
+  description = "Custom IAM policy for ${var.eks_cluster_name} EKS cluster worker nodes"
+
+  policy = var.workers_custom_policy
 }
 
 resource "aws_eks_addon" "vpc-cni" {

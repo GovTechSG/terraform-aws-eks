@@ -374,3 +374,35 @@ variable "addon_coredns_version" {
   type        = string
   default     = ""
 }
+
+variable "workers_additional_policies" {
+  type = list(string)
+  description = "Additional IAM policies to be added to workers"
+  default = []
+
+  validation {
+    condition = anytrue([
+      alltrue([
+        for policy_arn in var.workers_additional_policies : can(regex("^arn:aws:iam::(?:\\d{12}|aws):policy/.+", policy_arn))
+      ]),
+      length(var.workers_additional_policies) == 0
+    ])
+
+    error_message = "'workers_additional_policies' must be a list of valid IAM policies's ARN."
+  }
+}
+
+variable "workers_custom_policy" {
+  description = "Custom IAM policy to be added to workers (supports heredoc syntax, e.g. <<EOF ... EOF)"
+  type        = string
+  default     = ""
+
+  validation {
+    condition = anytrue([
+      can(jsondecode(var.workers_custom_policy)),
+      length(var.workers_custom_policy) == 0
+    ])
+
+    error_message = "'workers_custom_policy' must be a valid JSON string."
+  }
+}
